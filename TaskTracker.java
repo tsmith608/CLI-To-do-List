@@ -3,15 +3,60 @@ import java.util.*;
 import java.nio.file.*;
 
 public class TaskTracker {
-    private static final String TASKS_FILE = "tasks.json";
+    private static final String TASKS_FILE = "C:\\Users\\tjs83\\IdeaProjects\\untitled\\src\\tasks.json";
     private static List<Task> tasks = new ArrayList<>();
 
+    public static void main(String[] args) {
+        loadTasks();
+
+        String command = args[0];
+
+        if (args.length < 1) {
+            System.out.println("No tasks file specified");
+        }
+
+
+
+        switch (command) {
+            case "add":
+                if (args.length != 4) {
+                    System.out.println("Usage: add <id> <description> <status>");
+                    return;
+                }
+                addTask(args[1], args[2], args[3]);
+                break;
+            case "update":
+                if (args.length != 4) {
+                    System.out.println("Usage: update <id> <description> <status>");
+                }
+                updateTask(args[1], args[2], args[3]);
+                break;
+            case "delete":
+                if (args.length != 4) {
+                    System.out.println("Usage: delete <id>");
+                    return;
+                }
+                deleteTask(args[1]);
+                break;
+            case "list":
+                if (args.length == 1) {
+                    listTasksByStatus(args[1]);
+                } else {
+                    System.out.println("Usage: list [status]");
+                }
+                break;
+            default:
+                System.out.println("unknown command: " + command);
+                break;
+        }
+    }
+
     private static void loadTasks() {
-        File file = new File("tasks.txt");
+        File file = new File("C:\\Users\\tjs83\\IdeaProjects\\untitled\\src\\tasks.json");
 
 
         if (!file.exists()) {
-            System.out.println("No tasks found, starting anew");
+            System.out.println("No tasks file found, starting anew");
             return;
         }
 
@@ -36,7 +81,7 @@ public class TaskTracker {
                 String createdAt = attributes[3].split(":")[1];
                 String updatedAt = attributes[4].split(":")[1];
 
-                Task task = new Task(id, description, status, createdAt, updatedAt);
+                Task task = new Task(id, description, status);
                 tasks.add(task);
 
             }
@@ -55,7 +100,7 @@ public class TaskTracker {
                 );
                 writer.println(taskJson);
                 if (i < tasks.size() - 1) {
-                    writer.println(",");
+                    writer.write(",");
                 }
             }
             writer.println("]");
@@ -64,8 +109,44 @@ public class TaskTracker {
         }
     }
 
-    private static void addTask(int id, String description, String status) {
-        Task task = new Task(id, description, status, gete)
+    private static void addTask(String id, String description, String status) {
+        Task task = new Task(id, description, status);
+        tasks.add(task);
+        saveTasks();
     }
+
+    private static void updateTask(String id, String newDescription, String newStatus) {
+        for (Task task : tasks) {
+            if (task.getId().equals(id)) {
+                task.setDescription(newDescription);
+                task.setStatus(newStatus);
+                saveTasks();
+                return;
+
+            }
+        }
+        System.out.println("Task not found with id " + id);
+    }
+
+    private static void deleteTask(String id) {
+        tasks.removeIf(task -> task.getId().equals(id));
+        saveTasks();
+    }
+
+    private static void listAllTasks() {
+        for (Task task : tasks) {
+            System.out.println(task);
+        }
+    }
+
+    private static void listTasksByStatus(String status) {
+        for (Task task : tasks) {
+            if (task.getStatus().equalsIgnoreCase(status)) {
+                System.out.println(task);
+            }
+        }
+    }
+
 }
+
 

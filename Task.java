@@ -9,7 +9,7 @@ public class Task {
     private String updatedAt;
 
     // Constructor to initialize a new task
-    public Task(String id, String description, String status, String createdAt, String updatedAt) {
+    public Task(String id, String description, String status) {
         this.id = generateUniqueId();
         this.description = description;
         this.status = status;
@@ -23,7 +23,7 @@ public class Task {
     }
 
     // Get the current time in ISO 8601 format
-    private String getCurrentTime() {
+    public String getCurrentTime() {
         DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
         return LocalDateTime.now().format(formatter);
     }
