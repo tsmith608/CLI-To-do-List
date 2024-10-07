@@ -27,12 +27,13 @@ public class Task {
 
     // Generate a unique ID for the task
     private String generateUniqueId() {
-        return java.util.UUID.randomUUID().toString();
+        return java.util.UUID.randomUUID().toString().substring(0,4);
     }
 
     // Get the current time in ISO 8601 format
     public String getCurrentTime() {
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
         return LocalDateTime.now().format(formatter);
     }
 
@@ -79,7 +80,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return String.format("Task{id='%s', description='%s', status='%s', createdAt='%s', updatedAt='%s'}",
+        return String.format("id: %s, description: '%s', status: '%s', createdAt: %s, updatedAt: %s",
                 id, description, status, createdAt, updatedAt);
     }
 }

@@ -2,6 +2,8 @@ import java.io.*;
 import java.util.*;
 import java.nio.file.*;
 
+    //cd C:\Users\trent\Downloads\CLI-To-do-List-main\CLI-To-do-List-main
+    //javac Task.java TaskTracker.java
 public class TaskTracker {
     private static final String TASKS_FILE = "tasks.json";
     private static List<Task> tasks = new ArrayList<>();
@@ -28,10 +30,10 @@ public class TaskTracker {
                 addTask(args[1]);
                 break;
             case "update":
-                if (args.length != 4) {
-                    System.out.println("Usage: update <id> <new description> <new status>");
+                if (args.length != 3) {
+                    System.out.println("Usage: update <id> <new status>");
                 }
-                updateTask(args[1], args[2], args[3]);
+                updateTask(args[1], args[2]);
                 break;
             case "delete":
                 if (args.length != 2) {
@@ -88,8 +90,8 @@ public class TaskTracker {
                 Task task = new Task(id, description, status, createdAt, updatedAt);
                 tasks.add(task);
 
-                System.out.println("Successfully loaded task: " + description);
-                System.out.println("loaded " + tasks.size() + " tasks");
+                //System.out.println("Successfully loaded task: " + description);
+                //System.out.println("loaded " + tasks.size() + " tasks");
 
             }
         } catch (IOException e) {
@@ -125,10 +127,9 @@ public class TaskTracker {
         System.out.println("Task " + id + " added");
     }
 
-    private static void updateTask(String id, String newDescription, String newStatus) {
+    private static void updateTask(String id, String newStatus) {
         for (Task task : tasks) {
             if (task.getId().equals(id)) {
-                task.setDescription(newDescription);
                 task.setStatus(newStatus);
                 saveTasks();
                 return;
