@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -9,23 +10,32 @@ public class Task {
     private String updatedAt;
 
     // Constructor to initialize a new task
-    public Task(String id, String description, String status) {
+    public Task(String description, String status) {
         this.id = generateUniqueId();
         this.description = description;
         this.status = status;
         this.createdAt = getCurrentTime();
         this.updatedAt = getCurrentTime();
     }
+    public Task(String id, String description, String status, String createdAt, String updatedAt) {
+        this.id = id;
+        this.description = description;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
 
     // Generate a unique ID for the task
     private String generateUniqueId() {
-        return java.util.UUID.randomUUID().toString();
+        return java.util.UUID.randomUUID().toString().substring(0,4);
     }
 
     // Get the current time in ISO 8601 format
     public String getCurrentTime() {
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-        return LocalDateTime.now().format(formatter);
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+
+        return LocalDate.now().format(formatter);
     }
 
     // Getter and Setter methods
@@ -71,7 +81,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return String.format("Task{id='%s', description='%s', status='%s', createdAt='%s', updatedAt='%s'}",
+        return String.format("id: %s, description: '%s', status: '%s', createdAt: %s, updatedAt: %s",
                 id, description, status, createdAt, updatedAt);
     }
 }
